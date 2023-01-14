@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Container from "react-bootstrap/Container";
 import Badge from "@mui/material/Badge";
 import Nav from "react-bootstrap/Nav";
@@ -11,6 +11,10 @@ import { DLT } from "../redux/actions/action";
 import { useDispatch } from "react-redux";
 
 const Header = () => {
+
+    const [price, setPrice] = useState(0);
+    // console.log(price);
+    
    const getdata = useSelector((state)=>state.cartreducer.carts);
    console.log(getdata);
    
@@ -28,6 +32,19 @@ const Header = () => {
    const dlt =(id) =>{
     dispatch(DLT(id));
    }
+
+   const total =()=>{
+    let price = 0;
+    getdata.map((ele,k)=>{
+      price =ele.price +price
+    });
+    setPrice(price);
+   }
+
+    useEffect(() => {
+      total();
+    }, [total])
+    
 
   return (
     <>
@@ -95,7 +112,7 @@ const Header = () => {
                   )
                 })
                 }
-                <p className="text-center">Total : ₹300</p>
+                <p className="text-center">Total : ₹{price}</p>
               </tbody>
             </Table>
         </div>:

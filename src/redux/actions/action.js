@@ -5,6 +5,7 @@ export const ADD = (item) => {
   };
 };
 
+//remove items
 export const DLT = (id) => {
     return {
       type: "RMV_CART",
@@ -12,3 +13,10 @@ export const DLT = (id) => {
     };
   };
   
+  //remove individual items 
+  export const REMOVE = (iteam) => {
+    return {
+      type: "RMV_ONE",
+      payload: iteam,
+    };
+  };

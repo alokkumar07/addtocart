@@ -6,11 +6,19 @@ export const cartreducer =(state=INIT_STATE,action)=>{
     // eslint-disable-next-line default-case
     switch(action.type){
         case "ADD_CART":
-            return {
+            const IteamIndex = state.carts.findIndex((iteam)=> iteam.id === action.payload.id);
+             if(IteamIndex >= 0){
+                state.carts[IteamIndex].qnty +=1
+             }else{
+                const temp ={...action.payload,qnty:1}
+                 return {
                 ...state,
-                carts:[...state.carts,action.payload]
+                carts:[...state.carts,temp]
             }
+             }
+           
         
+        // eslint-disable-next-line no-fallthrough
         case "RMV_CART":
             const data = state.carts.filter((ele)=>ele.id !== action.payload);
              
@@ -18,7 +26,25 @@ export const cartreducer =(state=INIT_STATE,action)=>{
               ...state,
                 carts:data
             }
-          
+        case "RMV_ONE":
+            const IteamIndex_dec= state.carts.findIndex((iteam)=> iteam.id === action.payload.id);
+            if(state.carts[IteamIndex_dec].qnty>=1){
+              const dltitem =  state.carts[IteamIndex_dec].qnty -=1
+              console.log([...state.carts,dltitem]);
+               return {
+                ...state,
+                carts:[...state.carts]
+               }
+            }else if(state.carts[IteamIndex_dec].qnty === 1){
+                const data = state.carts.filter((el)=>el.id !== action.payload);
+             
+                return {
+                  ...state,
+                    carts:data
+                }
+        } 
+
+        // eslint-disable-next-line no-fallthrough
         default:
           return state;
     }
